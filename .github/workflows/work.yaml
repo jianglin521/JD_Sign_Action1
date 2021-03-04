@@ -1,11 +1,11 @@
-name: JD-sign bot
+name: jd-sign bot
 
 on:
     push:
         branches:
             - master
     schedule:
-        - cron: '5 16 * * *'
+        - cron: '0 1 * * *'
 jobs:
     build:
         runs-on: ubuntu-latest
