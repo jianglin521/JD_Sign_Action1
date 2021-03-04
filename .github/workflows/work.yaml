@@ -7,8 +7,8 @@ on:
     schedule:
         - cron: '0 1 * * *'
 jobs:
-    build:
-        runs-on: ubuntu-latest
+    deploy:
+        runs-on: Ubuntu 18.04
 
         steps:
             - name: Checkout codes
@@ -17,9 +17,11 @@ jobs:
               uses: actions/setup-node@v1
               with:
                 node-version: '12.x'
-            - name: Run app
+            - name: install
               run: npm install
-            - run: node app.js
+            - name: build
               env:
                 JD_COOKIE: ${{ secrets.JD_COOKIE }}
                 PUSH_KEY: ${{ secrets.PUSH_KEY }}
+              run: |
+                node app.js
