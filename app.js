@@ -11,6 +11,9 @@ const download = require('download')
 const KEY = process.env.JD_COOKIE
 const serverJ = process.env.PUSH_KEY
 
+// const KEY = 111
+// const serverJ = 222
+
 async function downFile () {
     // const url = 'https://cdn.jsdelivr.net/gh/NobyDa/Script@master/JD-DailyBonus/JD_DailyBonus.js'
     const url = 'https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js'
@@ -21,6 +24,36 @@ async function changeFiele () {
    let content = await fs.readFileSync('./JD_DailyBonus.js', 'utf8')
    content = content.replace(/var Key = ''/, `var Key = '${KEY}'`)
    await fs.writeFileSync( './JD_DailyBonus.js', content, 'utf8')
+}
+
+Date.prototype.Format = function (fmt) {
+  var o = {
+    'M+': this.getMonth() + 1,
+    'd+': this.getDate(),
+    'H+': this.getHours(),
+    'm+': this.getMinutes(),
+    's+': this.getSeconds(),
+    'S+': this.getMilliseconds()
+  };
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(String(o[k]).length)));
+    }
+  }
+  return fmt;
+};
+
+/* 格式化日期 */
+function dateFormat() {
+  var timezone = 8;
+  var GMT_offset = new Date().getTimezoneOffset();
+  var n_Date = new Date().getTime();
+  var t_Date = new Date(n_Date + GMT_offset * 60 * 1000 + timezone * 60 * 60 * 1000);
+  console.log(t_Date)
+  return t_Date.Format('yyyy.MM.dd')
 }
 
 async function sendNotify (text,desp) {
@@ -58,7 +91,7 @@ async function start() {
     if (fs.existsSync(path)) {
       content = fs.readFileSync(path, "utf8");
     }
-    await sendNotify("京东签到-" + new Date().toLocaleDateString(), content);
+    await sendNotify("京东签到_" + dateFormat(), content);
     console.log('发送结果完毕')
   }
 }
